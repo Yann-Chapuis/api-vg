@@ -5,16 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
 use App\Models\User;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Auth;
-use Validator;
+use Illuminate\Support\Facades\Validator;
    
 class AuthController extends BaseController
 {
-    /**
-     * Register api
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -31,17 +28,25 @@ class AuthController extends BaseController
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
+
+        // Création du profil
+        $r_profile['users_id'] = $user->id;
+        $r_profile['username'] = $input['name'];
+        $r_profile['life'] = '100';
+        $r_profile['attack'] = '5';
+        $r_profile['defense'] = '5';
+        $r_profile['health'] = '5';
+        $r_profile['gold'] = '1000';
+        $r_profile['ruby'] = '0';
+        $profile = Profile::create($r_profile);
+
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;
    
         return $this->sendResponse($success, 'User register successfully.');
     }
    
-    /**
-     * Login api
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function login(Request $request)
     {
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
