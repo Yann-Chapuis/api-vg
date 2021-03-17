@@ -32,11 +32,12 @@ class AuthController extends BaseController
         // Création du profil
         $r_profile['users_id'] = $user->id;
         $r_profile['username'] = $input['name'];
-        $r_profile['life'] = '100';
-        $r_profile['attack'] = '5';
-        $r_profile['defense'] = '5';
-        $r_profile['health'] = '5';
-        $r_profile['gold'] = '1000';
+        $r_profile['citizens'] = '50';
+        $r_profile['horses'] = '10';
+        $r_profile['golds'] = '100';
+        $r_profile['food'] = '350';
+        $r_profile['wood'] = '500';
+        $r_profile['stone'] = '500';
         $r_profile['ruby'] = '0';
         $profile = Profile::create($r_profile);
 
