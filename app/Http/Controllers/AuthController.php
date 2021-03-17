@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Citizens;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
    
@@ -40,6 +41,14 @@ class AuthController extends BaseController
         $r_profile['stone'] = '500';
         $r_profile['ruby'] = '0';
         $profile = Profile::create($r_profile);
+
+        // Initialisation de la tab le citizens
+        $r_citizens['profiles_id'] = $profile->id;
+        $r_citizens['action'] = 'initialisation';
+        $r_citizens['before'] = '0';
+        $r_citizens['after'] = '50';
+        $citizens = Citizens::create($r_citizens);
+
 
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;

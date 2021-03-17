@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CitizensController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,17 @@ Route::middleware('auth:api')->group( function () {
     // Route::resource('profiles', ProfileController::class);
 
     Route::prefix('profiles')->group(function () {
-        Route::name('profiles.show')->get('{id}', [ProfileController::class, 'show']);
-        Route::name('profiles.update')->match(['put', 'patch'],'{id}', [ProfileController::class, 'update']);
+
+        // Profile
+        Route::name('show')->get('{id}', [ProfileController::class, 'show']);
+        Route::name('update')->match(['put', 'patch'],'{id}', [ProfileController::class, 'update']);
+    });
+
+    Route::prefix('citizens')->group(function () {
+
+        // Citizens
+        Route::name('show')->get('{id}', [CitizensController::class, 'show']);
+        Route::name('update')->match(['put', 'patch'],'/', [CitizensController::class, 'update']);
+
     });
 });

@@ -11,18 +11,12 @@ use App\Http\Resources\Profile as ProfileResource;
 class ProfileController extends BaseController
 {
 
-    public function index()
-    {
-        $profile = Profile::all();
-    
-        return $this->sendResponse(ProfileResource::collection($profile), 'Les profiles ont été récupéré.');
-    }
 
     public function show($id) {
         $profile = Profile::find($id);
   
         if (is_null($profile)) {
-            return $this->sendError('Le profile n\'a pas été trouvé.');
+            return $this->sendError('Le profile n\'a pas été trouvée.');
         }
    
         return $this->sendResponse(new ProfileResource($profile), 'Profil récupéré avec succès.');
