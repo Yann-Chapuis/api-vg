@@ -18,11 +18,12 @@ class CreateProfilesTable extends Migration
             $table->unsignedBigInteger('users_id');
             $table->foreign('users_id')->references('id')->on('users');
             $table->string('username');
-            $table->bigInteger('life');
-            $table->bigInteger('attack');
-            $table->bigInteger('defense');
-            $table->bigInteger('health');
-            $table->bigInteger('gold');
+            $table->bigInteger('citizens');
+            $table->bigInteger('horses');
+            $table->bigInteger('golds');
+            $table->bigInteger('food');
+            $table->bigInteger('wood');
+            $table->bigInteger('stone');
             $table->bigInteger('ruby');
             $table->timestamps();
         });

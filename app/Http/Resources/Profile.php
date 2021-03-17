@@ -18,11 +18,12 @@ class Profile extends JsonResource
             'id' => $this->id,
             'users_id' => $this->users_id,
             'username' => $this->username,
-            'life' => $this->life,
-            'attack' => $this->attack,
-            'defense' => $this->defense,
-            'health' => $this->health,
-            'gold' => $this->gold,
+            'citizens' => $this->citizens,
+            'horses' => $this->horses,
+            'golds' => $this->golds,
+            'food' => $this->food,
+            'wood' => $this->wood,
+            'stone' => $this->stone,
             'ruby' => $this->ruby
         ];
     }

@@ -25,34 +25,43 @@ class ProfileController extends BaseController
             return $this->sendError('Le profile n\'a pas été trouvé.');
         }
    
-        return $this->sendResponse(new ProfileResource($profile), 'Profile récupéré avec succès.');
+        return $this->sendResponse(new ProfileResource($profile), 'Profil récupéré avec succès.');
     }
 
     public function update(Request $request, Profile $profile, $id)
     {
+        $profile = Profile::find($id);
+
+
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'life' => 'required',
-            'attack' => 'required',
-            'defense' => 'required',
-            'health' => 'required',
-            'gold' => 'required',
+            'citizens' => 'required',
+            'horses' => 'required',
+            'golds' => 'required',
+            'food' => 'required',
+            'wood' => 'required',
+            'stone' => 'required',
             'ruby' => 'required'
         ]);
-        if($id === null) {
+
+
+        if($profile === null) {
             return $this->sendError('L\'utilisateur n\'existe pas.', $validator->errors());      
         }
+
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
-        $profile = Profile::find($id);
-        $profile->life = $input['life'];
-        $profile->attack = $input['attack'];
-        $profile->defense = $input['defense'];
-        $profile->health = $input['health'];
-        $profile->gold = $input['gold'];
+        
+        $profile->citizens = $input['citizens'];
+        $profile->horses = $input['horses'];
+        $profile->golds = $input['golds'];
+        $profile->food = $input['food'];
+        $profile->wood = $input['wood'];
+        $profile->stone = $input['stone'];
         $profile->ruby = $input['ruby'];
+
         $profile->save();
    
         return $this->sendResponse(new ProfileResource($profile), 'Product updated successfully.');

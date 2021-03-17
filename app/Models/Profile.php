@@ -15,6 +15,6 @@ class Profile extends Model
      * @var array
      */
     protected $fillable = [
-        'users_id', 'username', 'life', 'attack', 'attack', 'defense', 'health', 'gold', 'ruby'
+        'users_id', 'username', 'citizens', 'horses', 'golds', 'food', 'wood', 'stone', 'ruby'
     ];
 }
