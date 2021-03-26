@@ -15,8 +15,8 @@ class CreateCitizensTable extends Migration
     {
         Schema::create('citizens', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('profiles_id');
-            $table->foreign('profiles_id')->references('id')->on('profiles');
+            $table->unsignedBigInteger('profile_id');
+            $table->foreign('profile_id')->references('id')->on('profiles');
             $table->string('action');
             $table->bigInteger('before');
             $table->bigInteger('after');

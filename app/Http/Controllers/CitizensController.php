@@ -4,38 +4,38 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
-use App\Models\Citizens;
+use App\Models\Citizen;
 use App\Models\Profile;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\Citizens as CitizensResource;
+use App\Http\Resources\Citizen as CitizenResource;
 
 class CitizensController extends BaseController
 {
     public function show($id) {
         // $profile = Citizens::find($id);
-        $profile = Citizens::where('profiles_id', $id)->first();
+        $profile = Citizen::where('profile_id', $id)->orderBy('created_at', 'DESC')->first();
   
         if (is_null($profile)) {
             return $this->sendError('Le profile n\'a pas été trouvé.');
         }
    
-        return $this->sendResponse(new CitizensResource($profile), 'Effectué.');
+        return $this->sendResponse(new CitizenResource($profile), 'Effectué.');
     }
 
 
 
-    public function update(Request $request, Citizens $citizens, Profile $profile) {
+    public function update(Request $request, Citizen $citizens, Profile $profile) {
 
-        $current_user_id = Auth::id();
-        $current_profile_user = Profile::where('users_id', $current_user_id)->first();
+        $currentUserId = Auth::id();
+        $currentProfileUser = Profile::where('user_id', $currentUserId)->first();
 
-        $profile = Profile::find($current_profile_user->id);
+        $profile = Profile::find($currentProfileUser->id);
 
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'profiles_id' => 'required',
+            'profile_id' => 'required',
             'action' => 'required',
             'before' => 'required',
             'after' => 'required'
@@ -50,18 +50,18 @@ class CitizensController extends BaseController
         }
 
         // Récupérer la dernière entrée et comparer avant/après
-        $last_entry = Citizens::where('profiles_id', $current_profile_user->id)->latest()->first();
+        $last_entry = Citizen::where('profile_id', $currentProfileUser->id)->latest()->first();
 
-        if($current_profile_user->id == $input['profiles_id']) {
+        if($currentProfileUser->id == $input['profile_id']) {
             if($input['before'] == $last_entry['after']) {
                 // Ajout de l'entrée en bdd
-                $citizens = Citizens::create($request->all());
+                $citizens = Citizen::create($request->all());
                 
                 // Modification du profil
-                $current_profile_user->citizens = $input['after'];
-                $current_profile_user->save();
+                $currentProfileUser->citizens = $input['after'];
+                $currentProfileUser->save();
 
-                return $this->sendResponse(new CitizensResource($citizens), 'Product updated successfully.');
+                return $this->sendResponse(new CitizenResource($citizens), 'Product updated successfully.');
             }
             else {
                 return $this->sendError('Erreur. Veuillez contacter un modérateur.', $validator->errors());       
